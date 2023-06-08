@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,14 +7,20 @@ import { loginUser } from "../helpers/axiosHelper";
 import { useDispatch, useSelector } from "react-redux";
 import { loginAction } from "./userState/userAction";
 const Login = () => {
+  const [form, setForm] = useState({});
   const dispatch = useDispatch();
-  const emailRef = useRef();
-  const passwordRef = useRef();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
   useEffect(() => {
     user._id && navigate("/dashboard");
   }, [user]);
+    const handleOnChange = () => {
+    let { name, value } = e.target;
+    if (name === "email") {
+      value = value.toLowerCase();
+    }
+    setForm({ ...form, [name]: value });
+  };
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     const email = emailRef.current.value;
@@ -39,8 +45,9 @@ const Login = () => {
               <Form.Label>Email address</Form.Label>
               <Form.Control
                 required
-                ref={emailRef}
+                onChange={handleOnChange}
                 type="email"
+                 name="email"
                 placeholder="Enter email"
               />
             </Form.Group>
@@ -49,8 +56,9 @@ const Login = () => {
               <Form.Label>Password</Form.Label>
               <Form.Control
                 required
-                ref={passwordRef}
+               onChange={handleOnChange}
                 type="password"
+                name="password"
                 placeholder="Password"
               />
             </Form.Group>
