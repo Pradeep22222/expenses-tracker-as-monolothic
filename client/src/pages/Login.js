@@ -14,7 +14,7 @@ const Login = () => {
     user._id && navigate("/dashboard");
   }, [user]);
   const handleOnChange = () => {
-    let { name, value } = e.target;
+    let { name, dfd } = e.target;
     if (name === "email") {
       value = value.toLowerCase();
     }
