@@ -1,40 +1,28 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { Link, useNavigate } from "react-router-dom";
 import { MainLayout } from "../components/layout/MainLayout";
-import { loginUser } from "../helpers/axiosHelper";
-import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { loginAction } from "./userState/userAction";
-
 const Login = () => {
+  const [form, setForm] = useState({});
   const dispatch = useDispatch();
-  const emailRef = useRef();
-  const passwordRef = useRef();
   const navigate = useNavigate();
-
   const { user } = useSelector((state) => state.user);
-
   useEffect(() => {
-    //
     user._id && navigate("/dashboard");
   }, [user]);
-
+  const handleOnChange = () => {
+    let { name, value } = e.target;
+    if (name === "email") {
+      value = value.toLowerCase();
+    }
+    setForm({ ...form, [name]: value });
+  };
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    const email = emailRef.current.value;
-    const password = passwordRef.current.value;
-    // const { status, message, user } = await loginUser({ email, password });
-    // toast[status](message);
-
-    dispatch(loginAction({ email, password }));
-
-    // if (status === "success") {
-    //   window.sessionStorage.setItem("user", JSON.stringify(user));
-    //   setLogedIn(true);
-    //   navigate("/dashboard");
-    // }
+    dispatch(loginAction(form));
   };
   return (
     <MainLayout>
@@ -47,19 +35,22 @@ const Login = () => {
               <Form.Label>Email address</Form.Label>
               <Form.Control
                 required
-                ref={emailRef}
+                onChange={handleOnChange}
                 type="email"
                 placeholder="Enter email"
+                name="email"
               />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control
+                onChange={handleOnChange}
                 required
                 ref={passwordRef}
                 type="password"
                 placeholder="Password"
+                name="password"
               />
             </Form.Group>
 
