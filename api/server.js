@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, "/client/build")));
 // Server side rendering
 app.use("/", (req, res, next) => {
   try {
-    res.sendFile(path.join(_dirname + "/client/build/index.html"));
+    res.sendFile(path.join(__dirname + "/client/build/index.html"));
   } catch (error) {
     next(error);
   }
